@@ -537,7 +537,7 @@ RainbowConfig.addOptions(
   program
     .command('init-eth-locker')
     .description(
-      'Deploys and initializes locker contract on Ethereum blockchain. Requires mintable fungible token on Near side.'
+      'Deploys and initializes locker contract on Ethereum blockchain. Requires token factory on Near side.'
     ),
   InitEthLocker.execute,
   [
