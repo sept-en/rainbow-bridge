@@ -1,6 +1,28 @@
 require('@nomiclabs/hardhat-ethers');
 require('solidity-coverage');
 
+require('dotenv').config();
+
+const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY;
+const ROPSTEN_PRIVATE_KEY = process.env.ROPSTEN_PRIVATE_KEY;
+
+task('upgrade-provers-bridge-address-to', 'Upgrades the provided prover to use the bridge at the provided address')
+    .addParam('prover', 'Prover address')
+    .addParam('newBridge', 'The address of the new bridge')
+    .setAction(async taskArgs => {
+        const { upgradeProversBridgeAddressTo } = require('./utils/upgrade_bridge_address.js');
+        await upgradeProversBridgeAddressTo(hre.ethers.provider, taskArgs.prover, taskArgs.newBridge);
+    });
+
+task('get-provers-bridge-address', 'Returns the current bridge address used in the prover at the provided address')
+    .addParam('prover', 'Prover address')
+    .setAction(async taskArgs => {
+        const { getProversBridgeAddress } = require('./utils/upgrade_bridge_address.js');
+        const bridgeAddress = await getProversBridgeAddress(taskArgs.prover);
+        console.log(`Prover address: ${taskArgs.prover}`);
+        console.log(`Current bridge address: ${bridgeAddress}`);
+    });
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -12,6 +34,12 @@ module.exports = {
                 enabled: true,
                 runs: 1000
             }
+        }
+    },
+    networks: {
+        ropsten: {
+            url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+            accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
         }
     }
 };
