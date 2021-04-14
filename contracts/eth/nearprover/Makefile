@@ -1,4 +1,9 @@
+.PHONY: test
+
 NETWORK=ropsten
+
+test:
+	yarn hardhat test
 
 deploy-prover-with-mock-bridge:
 	yarn hardhat run --network ${NETWORK} utils/deploy_contracts.js
