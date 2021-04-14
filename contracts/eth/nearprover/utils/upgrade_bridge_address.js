@@ -17,8 +17,8 @@ async function upgradeProversBridgeAddressTo(provider, proverAddress, newBridgeA
 
     const adminWallet = new ethers.Wallet(process.env.ROPSTEN_PRIVATE_KEY, provider);
 
-    // Mask matches only on the latest 20 bytes (to store the address)
     const options = { gasLimit: 100000 };
+    // Mask matches only on the latest 20 bytes (to store the address)
     const mask = ethers.BigNumber.from("0x000000000000000000000000ffffffffffffffffffffffffffffffffffffffff");
     const response = await nearProver
         .connect(adminWallet)
